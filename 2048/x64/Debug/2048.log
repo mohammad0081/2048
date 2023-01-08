@@ -1,2 +1,4 @@
 ﻿  2048.cpp
+E:\Projects\C++\2048\2048\2048.cpp(355,13): warning C4101: 'point': unreferenced local variable
+E:\Projects\C++\2048\2048\2048.cpp(437,17): warning C4101: 'point': unreferenced local variable
   2048.vcxproj -> E:\Projects\C++\2048\x64\Debug\2048.exe

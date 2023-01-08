@@ -193,6 +193,57 @@ public:
      
 };
 
+class Admin : public Guest {
+private:
+   
+    string getUsername(string entered) {
+        string result = "";
+        for (int i = 0; i < entered.size(); i++) {
+            if (entered[i] == ':') {
+                break;
+            }
+            result += entered[i];
+        }
+        return result;
+    }
+
+    bool isUsernameExist(string entered) {
+        ifstream file("admins.txt");
+        string myText;
+        while (getline(file, myText)) {
+            // Output the text from the file
+            if (getUsername(myText) == entered) {
+                return 1;
+            }
+
+        }
+        file.close();
+        return 0;
+
+    }
+
+
+public:
+
+    bool isAdmin(string enteredUsername ) {
+        if (isUsernameExist(enteredUsername) == 1) {
+            return 1;
+        }
+        return 0;
+    }
+
+    void setPoint() {
+        int a, b, c;
+        cout << "enter the limits for scores 1 , 2 and 3 :";
+        cin >> a >> b >> c;
+
+        fstream file("scores.txt");
+        file.seekg(0, ios::end);
+        file << a << ':' << b << ':' << c << '\n';
+        file.close();
+    }
+};
+
 class Game {
     
     
@@ -265,17 +316,105 @@ public:
 
 int main()
 {
+    
     string order = firstPage();
     bool UserFlag = false;
 
-    if (order == "signIn") {
+    if (order == "Admin") {
+        Admin admin;
+        string username;
+        cout << "enter your username : ";
+        cin >> username;
+
+        if (admin.isAdmin(username) == 1) {
+            cout << "for setting scores enter 1 : ";
+            int a;
+            cin >> a;
+            if (a == 1) {
+                admin.setPoint();
+            }
+        }
+
+        else {
+            cout << "you are not admin !";
+        }
+
+
+    }
+
+    else if (order == "signIn") {
 
         Guest user;
         user.signIn();
         User userLogged(user.theUsername, user.thePassword);
         userLogged.welcome();
         cout << endl;
-        UserFlag = true;
+        // game started
+
+        const clock_t time1 = clock();
+        int point;
+
+        Game game;
+        game.matrix[0][0] = "12";
+        game.matrix[0][1] = "1";
+        game.matrix[0][2] = "2";
+        game.matrix[0][3] = "15";
+        game.matrix[1][0] = "11";
+        game.matrix[1][1] = "6";
+        game.matrix[1][2] = "5";
+        game.matrix[1][3] = "8";
+        game.matrix[2][0] = "7";
+        game.matrix[2][1] = "10";
+        game.matrix[2][2] = "9";
+        game.matrix[2][3] = "4";
+        game.matrix[3][0] = " ";
+        game.matrix[3][1] = "13";
+        game.matrix[3][2] = "14";
+        game.matrix[3][3] = "3";
+
+
+        game.printGame();
+
+        string order;
+        cout << endl;
+        cout << "Enter the Order , numbers to move, EXIT for exit : ";
+        cin >> order;
+
+        while (order != "EXIT") {
+            clock_t time2 = clock();
+
+            char charStar_i = game.indexOf(" ")[0];
+            char charStar_j = game.indexOf(" ")[2];
+            int intStar_i = charStar_i - '0';
+            int intStar_j = charStar_j - '0';
+
+            if (game.movementCorrect(order) == 1) {
+
+                char charOrder_i = game.indexOf(order)[0];
+                char charOrder_j = game.indexOf(order)[2];
+                int intOrder_i = charOrder_i - '0';
+                int intOrder_j = charOrder_j - '0';
+
+
+                string temp = order;
+                game.matrix[intOrder_i][intOrder_j] = " ";
+                game.matrix[intStar_i][intStar_j] = temp;
+
+            }
+            cout << endl;
+            cout << "time passed : " << timeDifference(time2, time1) << '\n' << '\n';
+
+            game.printGame();
+            cout << "Enter order : ";
+            cin >> order;
+
+        }
+
+        fstream file("user scores.txt");
+        file.seekg(0, ios::end);
+        file << user.theUsername<< '\n';
+        file.close();
+
 
     }
     else if (order == "logIn") {
@@ -292,7 +431,72 @@ int main()
 
             User userLogged(username, password);
             userLogged.welcome();
-            UserFlag = true;
+            // game started
+
+            const clock_t time1 = clock();
+            int point;
+
+            Game game;
+            game.matrix[0][0] = "12";
+            game.matrix[0][1] = "1";
+            game.matrix[0][2] = "2";
+            game.matrix[0][3] = "15";
+            game.matrix[1][0] = "11";
+            game.matrix[1][1] = "6";
+            game.matrix[1][2] = "5";
+            game.matrix[1][3] = "8";
+            game.matrix[2][0] = "7";
+            game.matrix[2][1] = "10";
+            game.matrix[2][2] = "9";
+            game.matrix[2][3] = "4";
+            game.matrix[3][0] = " ";
+            game.matrix[3][1] = "13";
+            game.matrix[3][2] = "14";
+            game.matrix[3][3] = "3";
+
+
+            game.printGame();
+
+            string order;
+            cout << endl;
+            cout << "Enter the Order , numbers to move, EXIT for exit : ";
+            cin >> order;
+
+            while (order != "EXIT") {
+                clock_t time2 = clock();
+
+                char charStar_i = game.indexOf(" ")[0];
+                char charStar_j = game.indexOf(" ")[2];
+                int intStar_i = charStar_i - '0';
+                int intStar_j = charStar_j - '0';
+
+                if (game.movementCorrect(order) == 1) {
+
+                    char charOrder_i = game.indexOf(order)[0];
+                    char charOrder_j = game.indexOf(order)[2];
+                    int intOrder_i = charOrder_i - '0';
+                    int intOrder_j = charOrder_j - '0';
+
+
+                    string temp = order;
+                    game.matrix[intOrder_i][intOrder_j] = " ";
+                    game.matrix[intStar_i][intStar_j] = temp;
+
+                }
+                cout << endl;
+                cout << "time passed : " << timeDifference(time2, time1) << '\n' << '\n';
+
+                game.printGame();
+                cout << "Enter order : ";
+                cin >> order;
+
+            }
+
+            fstream file("user scores.txt");
+            file.seekg(0, ios::end);
+            file << username << ':' << '\n';
+            file.close();
+
         }
 
         else {
@@ -356,70 +560,5 @@ int main()
         }
     }
 
-    
-
-
-    if (UserFlag) {
-        // game started
-
-        const clock_t time1 = clock();
-
-        Game game;
-        game.matrix[0][0] = "12";
-        game.matrix[0][1] = "1";
-        game.matrix[0][2] = "2";
-        game.matrix[0][3] = "15";
-        game.matrix[1][0] = "11";
-        game.matrix[1][1] = "6";
-        game.matrix[1][2] = "5";
-        game.matrix[1][3] = "8";
-        game.matrix[2][0] = "7";
-        game.matrix[2][1] = "10";
-        game.matrix[2][2] = "9";
-        game.matrix[2][3] = "4";
-        game.matrix[3][0] = " ";
-        game.matrix[3][1] = "13";
-        game.matrix[3][2] = "14";
-        game.matrix[3][3] = "3";
-
-
-        game.printGame();
-
-        string order;
-        cout << endl;
-        cout << "Enter the Order , numbers to move, EXIT for exit : ";
-        cin >> order;
-
-        while (order != "EXIT") {
-            clock_t time2 = clock();
-
-            char charStar_i = game.indexOf(" ")[0];
-            char charStar_j = game.indexOf(" ")[2];
-            int intStar_i = charStar_i - '0';
-            int intStar_j = charStar_j - '0';
-            
-            if (game.movementCorrect(order) == 1) {
-
-                char charOrder_i = game.indexOf(order)[0];
-                char charOrder_j = game.indexOf(order)[2];
-                int intOrder_i = charOrder_i - '0';
-                int intOrder_j = charOrder_j - '0';
-
-
-                string temp = order;
-                game.matrix[intOrder_i][intOrder_j] = " ";
-                game.matrix[intStar_i][intStar_j] = temp;
-               
-            }
-            cout << endl;
-            cout <<"time passed : " << timeDifference(time2, time1) << '\n' << '\n';
-
-            game.printGame();
-            cout << "Enter order : ";
-            cin >> order;
-
-        }
-
-    }
-      
+    cout << "\n Wish you had a good game !";
 }
