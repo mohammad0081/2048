@@ -17,7 +17,7 @@ string firstPage() {
     cout << "                                                   2048" << endl;
     cout << endl;
     cout << endl;
-    cout << "Welcome to 2048 , for log in please enter 'logIn' and if you dont have account yet, please 'signIn' : ";
+    cout << "Welcome to 2048 , for log in please enter 'logIn' and if you dont have account yet, please 'signIn', else if you want to play as a guest, enter Guest : ";
     cin >> result;
     return result;
 
@@ -266,7 +266,8 @@ public:
 int main()
 {
     string order = firstPage();
-    bool flag = false;
+    bool UserFlag = false;
+
     if (order == "signIn") {
 
         Guest user;
@@ -274,7 +275,7 @@ int main()
         User userLogged(user.theUsername, user.thePassword);
         userLogged.welcome();
         cout << endl;
-        flag = true;
+        UserFlag = true;
 
     }
     else if (order == "logIn") {
@@ -291,7 +292,7 @@ int main()
 
             User userLogged(username, password);
             userLogged.welcome();
-            flag = true;
+            UserFlag = true;
         }
 
         else {
@@ -300,7 +301,65 @@ int main()
 
     }
 
-    if (flag) {
+    else if (order == "Guest") {
+        Game game;
+        game.matrix[0][0] = "12";
+        game.matrix[0][1] = "1";
+        game.matrix[0][2] = "2";
+        game.matrix[0][3] = "15";
+        game.matrix[1][0] = "11";
+        game.matrix[1][1] = "6";
+        game.matrix[1][2] = "5";
+        game.matrix[1][3] = "8";
+        game.matrix[2][0] = "7";
+        game.matrix[2][1] = "10";
+        game.matrix[2][2] = "9";
+        game.matrix[2][3] = "4";
+        game.matrix[3][0] = "*";
+        game.matrix[3][1] = "13";
+        game.matrix[3][2] = "14";
+        game.matrix[3][3] = "3";
+
+        game.printGame();
+
+
+        string order;
+        cout << endl;
+        cout << "Enter the Order , numbers to move, EXIT for exit : ";
+        cin >> order;
+
+        while (order != "EXIT") {
+
+            char charStar_i = game.indexOf("*")[0];
+            char charStar_j = game.indexOf("*")[2];
+            int intStar_i = charStar_i - '0';
+            int intStar_j = charStar_j - '0';
+
+            if (game.movementCorrect(order) == 1) {
+
+                char charOrder_i = game.indexOf(order)[0];
+                char charOrder_j = game.indexOf(order)[2];
+                int intOrder_i = charOrder_i - '0';
+                int intOrder_j = charOrder_j - '0';
+
+
+                string temp = order;
+                game.matrix[intOrder_i][intOrder_j] = "*";
+                game.matrix[intStar_i][intStar_j] = temp;
+
+            }
+            cout << endl;
+
+            game.printGame();
+            cout << "Enter order : ";
+            cin >> order;
+        }
+    }
+
+    
+
+
+    if (UserFlag) {
         // game started
 
         const clock_t time1 = clock();
