@@ -229,7 +229,7 @@ public:
         int i = number_i - '0';
         int j = number_j - '0';
 
-        if (matrix[i - 1][j] == "*" || matrix[i][j - 1] == "*" || matrix[i][j + 1] == "*" || matrix[i + 1][j] == "*") {
+        if (matrix[i - 1][j] == " " || matrix[i][j - 1] == " " || matrix[i][j + 1] == " " || matrix[i + 1][j] == " ") {
             return 1;
         }
 
@@ -315,7 +315,7 @@ int main()
         game.matrix[2][1] = "10";
         game.matrix[2][2] = "9";
         game.matrix[2][3] = "4";
-        game.matrix[3][0] = "*";
+        game.matrix[3][0] = " ";
         game.matrix[3][1] = "13";
         game.matrix[3][2] = "14";
         game.matrix[3][3] = "3";
@@ -330,8 +330,8 @@ int main()
 
         while (order != "EXIT") {
 
-            char charStar_i = game.indexOf("*")[0];
-            char charStar_j = game.indexOf("*")[2];
+            char charStar_i = game.indexOf(" ")[0];
+            char charStar_j = game.indexOf(" ")[2];
             int intStar_i = charStar_i - '0';
             int intStar_j = charStar_j - '0';
 
@@ -344,7 +344,7 @@ int main()
 
 
                 string temp = order;
-                game.matrix[intOrder_i][intOrder_j] = "*";
+                game.matrix[intOrder_i][intOrder_j] = " ";
                 game.matrix[intStar_i][intStar_j] = temp;
 
             }
@@ -377,7 +377,7 @@ int main()
         game.matrix[2][1] = "10";
         game.matrix[2][2] = "9";
         game.matrix[2][3] = "4";
-        game.matrix[3][0] = "*";
+        game.matrix[3][0] = " ";
         game.matrix[3][1] = "13";
         game.matrix[3][2] = "14";
         game.matrix[3][3] = "3";
@@ -393,8 +393,8 @@ int main()
         while (order != "EXIT") {
             clock_t time2 = clock();
 
-            char charStar_i = game.indexOf("*")[0];
-            char charStar_j = game.indexOf("*")[2];
+            char charStar_i = game.indexOf(" ")[0];
+            char charStar_j = game.indexOf(" ")[2];
             int intStar_i = charStar_i - '0';
             int intStar_j = charStar_j - '0';
             
@@ -407,7 +407,7 @@ int main()
 
 
                 string temp = order;
-                game.matrix[intOrder_i][intOrder_j] = "*";
+                game.matrix[intOrder_i][intOrder_j] = " ";
                 game.matrix[intStar_i][intStar_j] = temp;
                
             }
